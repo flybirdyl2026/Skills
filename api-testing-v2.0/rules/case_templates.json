@@ -1,0 +1,83 @@
+{
+  "description": "用例生成模板 - 定义各类测试用例的生成规则（通用模板）",
+  "version": "1.0",
+  "templates": {
+    "positive": {
+      "description": "正向测试 - 正常参数",
+      "expect_fn": "exp_ok",
+      "ratio": 0.25
+    },
+    "negative": {
+      "description": "逆向测试 - 参数错误/缺失",
+      "expect_fn": "exp_biz_fail",
+      "cases": [
+        {
+          "name": "必填字段为空",
+          "desc_suffix": "-{field}为空"
+        },
+        {
+          "name": "缺少必填字段",
+          "desc_suffix": "-缺少必填字段"
+        },
+        {
+          "name": "不存在的数据",
+          "desc_suffix": "-不存在的{id}",
+          "params_template": {"{id}": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}
+        }
+      ],
+      "ratio": 0.40
+    },
+    "boundary": {
+      "description": "边界测试 - 极端值",
+      "expect_fn": null,
+      "long_string_length": 200,
+      "cases": [
+        {
+          "name": "超长字符串",
+          "desc_suffix": "-超长{field}"
+        },
+        {
+          "name": "空字符串",
+          "desc_suffix": "-{field}为空字符串",
+          "params_template": {"{field}": ""}
+        },
+        {
+          "name": "超出范围数值",
+          "desc_suffix": "-{field}超出范围",
+          "params_template": {"{field}": 999999999999}
+        }
+      ],
+      "ratio": 0.20
+    },
+    "security": {
+      "description": "安全测试 - 注入攻击",
+      "expect_fn": "exp_biz_fail",
+      "cases": [
+        {
+          "name": "SQL注入",
+          "desc_suffix": "-SQL注入攻击",
+          "params_template": {"{field}": "' OR '1'='1"}
+        },
+        {
+          "name": "XSS攻击",
+          "desc_suffix": "-XSS攻击",
+          "params_template": {"{field}": "<script>alert('xss')</script>"}
+        }
+      ],
+      "ratio": 0.15
+    }
+  },
+  "param_defaults": {
+    "string": "test_value",
+    "number": 100,
+    "integer": 1,
+    "boolean": true
+  },
+  "biz_key_fields": [
+    "name", "Name", "title", "Title",
+    "amount", "Amount", "price", "Price", "quantity", "Quantity",
+    "type", "Type", "status", "Status",
+    "content", "Content", "description", "Description",
+    "department", "Department", "user", "User"
+  ]
+}

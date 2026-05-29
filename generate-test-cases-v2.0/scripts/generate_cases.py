@@ -76,22 +76,23 @@ def _load_fallback_config():
     logger.info(f"使用 llm-config 配置：{base_url} / {model}")
     return api_key, base_url, model
 
-# 自动选择模型
-if _check_openclaw_available():
-    LLM_BASE_URL = OPENCLAW_BASE_URL
-    LLM_API_KEY = "openclaw"  # OpenClaw 本地代理不需要真实 key，但 langchain 需要非空值
-    LLM_MODEL = OPENCLAW_MODEL
-    logger.info("使用 OpenClaw 本地模型")
+# 自动选择模型：优先使用 llm-config 配置的模型，回退到 OpenClaw 本地模型
+api_key, base_url, model = _load_fallback_config()
+if api_key and base_url and model:
+    LLM_BASE_URL = base_url
+    LLM_API_KEY = api_key
+    LLM_MODEL = model
+    logger.info(f"使用 llm-config 配置：{base_url} / {model}")
 else:
-    api_key, base_url, model = _load_fallback_config()
-    if api_key and base_url and model:
-        LLM_BASE_URL = base_url
-        LLM_API_KEY = api_key
-        LLM_MODEL = model
-        logger.info(f"OpenClaw 本地模型不可用，回退到备用模型：{base_url} / {model}")
+    # 回退到 OpenClaw 本地模型
+    if _check_openclaw_available():
+        LLM_BASE_URL = OPENCLAW_BASE_URL
+        LLM_API_KEY = "openclaw"
+        LLM_MODEL = OPENCLAW_MODEL
+        logger.info("llm-config 配置不可用，回退到 OpenClaw 本地模型")
     else:
-        logger.error("OpenClaw 本地模型不可用，且 scripts/config.ini 配置不完整")
-        print("错误：无可用模型。\n请在 scripts/config.ini 中补充以下配置：\n  api_key  = 你的API密钥\n  base_url = API地址（如 https://api.openai.com/v1）\n  model   = 模型名（如 gpt-4o）")
+        logger.error("无可用模型：llm-config 配置不完整，且 OpenClaw 本地模型不可用")
+        print("错误：无可用模型。\n请配置 llm-config/llm_config.ini 或确认 OpenClaw 本地模型可用")
         exit(1)
 
 

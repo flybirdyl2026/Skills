@@ -1,0 +1,89 @@
+{
+  "description": "接口分类规则 - 用于识别接口类型并生成对应用例（通用模板）",
+  "version": "1.0",
+  "classifications": {
+    "detail_api": {
+      "keywords": {
+        "path": ["/getById", "/ById", "/detail", "/get/", "/info", "/show"],
+        "summary": ["详情", "明细", "获取", "查看", "信息"]
+      },
+      "method": ["GET"],
+      "case_type": "正向测试",
+      "id_params": ["id", "uuid", "code", "Id", "ID"]
+    },
+    "list_api": {
+      "keywords": {
+        "path": ["/page", "/list", "/query", "/search", "/items"],
+        "summary": ["列表", "分页", "查询", "检索", "搜索"]
+      },
+      "method": ["GET"],
+      "case_type": "正向测试",
+      "default_params": {"pageNum": 1, "pageSize": 10}
+    },
+    "stat_api": {
+      "keywords": {
+        "path": ["/stat", "/summary", "/count", "/total", "/dashboard"],
+        "summary": ["统计", "汇总", "报表", "分析", "总计", "概览"]
+      },
+      "method": ["GET"],
+      "case_type": "正向测试"
+    },
+    "export_api": {
+      "keywords": {
+        "path": ["/export", "/download", "/output", "/excel", "/pdf"],
+        "summary": ["导出", "下载", "输出", "报表"]
+      },
+      "method": ["GET", "POST"],
+      "case_type": "正向测试"
+    },
+    "save_api": {
+      "keywords": {
+        "path": ["/save", "/add", "/create", "/insert", "/submit", "/report"],
+        "summary": ["保存", "新增", "创建", "提交", "上报", "填报", "添加"]
+      },
+      "method": ["POST"],
+      "case_type": "正向测试"
+    },
+    "update_api": {
+      "keywords": {
+        "path": ["/update", "/edit", "/modify", "/put"],
+        "summary": ["更新", "修改", "编辑", "变更"]
+      },
+      "method": ["PUT", "POST"],
+      "case_type": "正向测试"
+    },
+    "start_api": {
+      "keywords": {
+        "path": ["/start", "/begin", "/launch", "/approve"],
+        "summary": ["开启", "启动", "提交", "审批", "发起", "开始流程"]
+      },
+      "method": ["POST"],
+      "case_type": "正向测试"
+    },
+    "delete_api": {
+      "keywords": {
+        "path": ["/delete", "/remove", "/del"],
+        "summary": ["删除", "移除", "清除"]
+      },
+      "method": ["DELETE"],
+      "case_type": "正向测试"
+    },
+    "upload_api": {
+      "keywords": {
+        "path": ["/upload", "/import", "/file"],
+        "summary": ["上传", "导入", "文件"]
+      },
+      "method": ["POST"],
+      "case_type": "正向测试"
+    }
+  },
+  "system_fields": [
+    "uuid", "id", "ID", "deleted", "createdBy", "createdTime",
+    "updatedBy", "updatedTime", "userId", "deptId",
+    "deptName", "orgId", "orgName", "oneGroupId",
+    "groupName", "revision", "groupCode", "taskId",
+    "procId", "fileIdList", "fileIds", "tradeUnion",
+    "pageNum", "pageSize", "current", "total", "size",
+    "mobile", "token", "appCode", "Authorization"
+  ]
+}

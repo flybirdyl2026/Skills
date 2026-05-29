@@ -1,0 +1,150 @@
+{
+  "description": "业务流程模式规则 - 定义通用业务流程模式",
+  "version": "1.0",
+  "patterns": [
+    {
+      "name": "列表详情流程",
+      "description": "查询列表 → 查看详情",
+      "steps": [
+        {
+          "role": "list_api",
+          "action": "查询数据列表",
+          "params_template": {"pageNum": 1, "pageSize": 10},
+          "extract_field": "uuid"
+        },
+        {
+          "role": "detail_api",
+          "action": "查看数据详情",
+          "params_template": {"uuid": "$uuid"},
+          "depends_on": "list_api"
+        }
+      ]
+    },
+    {
+      "name": "保存查询流程",
+      "description": "创建数据 → 查询验证",
+      "steps": [
+        {
+          "role": "save_api",
+          "action": "创建数据",
+          "params_template": {},
+          "extract_field": "uuid"
+        },
+        {
+          "role": "list_api",
+          "action": "查询验证数据",
+          "params_template": {"pageNum": 1, "pageSize": 10},
+          "depends_on": "save_api"
+        }
+      ]
+    },
+    {
+      "name": "保存删除流程",
+      "description": "创建数据 → 删除数据",
+      "steps": [
+        {
+          "role": "save_api",
+          "action": "创建数据",
+          "params_template": {},
+          "extract_field": "uuid"
+        },
+        {
+          "role": "delete_api",
+          "action": "删除数据",
+          "params_template": {"uuid": "$uuid"},
+          "depends_on": "save_api"
+        }
+      ]
+    },
+    {
+      "name": "完整业务流程",
+      "description": "创建 → 提交/启动 → 查询详情 → 删除",
+      "steps": [
+        {
+          "role": "save_api",
+          "action": "创建数据",
+          "params_template": {},
+          "extract_field": "uuid"
+        },
+        {
+          "role": "start_api",
+          "action": "提交启动流程",
+          "params_template": {},
+          "depends_on": "save_api"
+        },
+        {
+          "role": "detail_api",
+          "action": "查询详情",
+          "params_template": {"uuid": "$uuid"},
+          "depends_on": "start_api"
+        },
+        {
+          "role": "delete_api",
+          "action": "删除数据",
+          "params_template": {"uuid": "$uuid"},
+          "depends_on": "detail_api"
+        }
+      ]
+    },
+    {
+      "name": "创建查询详情流程",
+      "description": "创建数据 → 查询列表 → 查看详情",
+      "steps": [
+        {
+          "role": "save_api",
+          "action": "创建数据",
+          "params_template": {},
+          "extract_field": "uuid"
+        },
+        {
+          "role": "list_api",
+          "action": "查询列表",
+          "params_template": {"pageNum": 1, "pageSize": 10},
+          "depends_on": "save_api"
+        },
+        {
+          "role": "detail_api",
+          "action": "查看详情",
+          "params_template": {"uuid": "$uuid"},
+          "depends_on": "list_api"
+        }
+      ]
+    },
+    {
+      "name": "更新查询流程",
+      "description": "更新数据 → 查询验证",
+      "steps": [
+        {
+          "role": "update_api",
+          "action": "更新数据",
+          "params_template": {},
+          "extract_field": "uuid"
+        },
+        {
+          "role": "list_api",
+          "action": "查询更新结果",
+          "params_template": {"pageNum": 1, "pageSize": 10},
+          "depends_on": "update_api"
+        }
+      ]
+    },
+    {
+      "name": "统计导出流程",
+      "description": "查询统计 → 导出数据",
+      "steps": [
+        {
+          "role": "stat_api",
+          "action": "查询统计数据",
+          "params_template": {},
+          "extract_field": null
+        },
+        {
+          "role": "export_api",
+          "action": "导出统计报表",
+          "params_template": {},
+          "depends_on": "stat_api"
+        }
+      ]
+    }
+  ]
+}
